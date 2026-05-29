@@ -24,25 +24,14 @@ A rep-facing SMB Quote Builder that lets a TELUS sales rep select products, conf
 npm install
 
 # Add your Anthropic API key
-cp .env.example .env
-# Edit .env and add your VITE_ANTHROPIC_API_KEY
+echo "VITE_ANTHROPIC_API_KEY=your_key_here" > .env
 
 # Start the dev server
 npm run dev
-# Open http://localhost:5173
+# Open http://localhost:3333
 
 # Run tests
 npm test
-```
-
----
-
-## How to Deploy to Vercel
-
-```bash
-npm install -g vercel
-vercel
-# Follow prompts — add VITE_ANTHROPIC_API_KEY as environment variable
 ```
 
 ---
@@ -96,7 +85,7 @@ All pricing sourced directly from **telus.com/en/business** (verified May 2026).
 - **React 18** — component-based UI with hooks
 - **Vite** — build tooling and dev server
 - **Vitest** — unit tests for pricing logic
-- **Claude API (claude-opus-4-5)** — AI-generated proposal narratives
+- **Claude API (claude-sonnet-4-6)** — AI-generated proposal narratives
 - **DM Sans + DM Mono** — typography
 - **CSS-in-JS (style tag)** — no external CSS framework, full control
 
