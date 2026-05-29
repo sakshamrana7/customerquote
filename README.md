@@ -92,7 +92,26 @@ All pricing sourced directly from **telus.com/en/business** (verified May 2026).
 **AI tools used in development:**
 - Claude Code for component scaffolding and refactoring
 - Cursor for inline editing and debugging
-- All product data, pricing logic, promotional rules, and test cases were written and verified by me
+
+---
+
+## AI-Generated vs. What I Directed
+
+**What I directed and own:**
+
+- The product concept, scope, and feature set
+- All product data, pricing, and tier structures — sourced and verified manually from telus.com/en/business
+- All promotional rules and the logic for how discounts stack
+- The decision to use a component-based quote builder rather than fixed bundle packages
+- The AI narrative prompt — written, iterated, and refined by me to produce specific, non-generic output grounded in the configured quote
+- The context passed to Claude — structured to include real tier names, speeds, data caps, features, and savings figures so the narrative changes meaningfully with each product selection
+- All test cases and pricing edge case decisions (documented in UNCERTAINTY_LOG.md)
+
+**What AI helped generate:**
+
+- React component structure and CSS styling (scaffolded via Claude Code, reviewed and adjusted by me)
+- Utility function boilerplate (`calculateQuote`, `getCartSummary`, `buildLLMContext`) — logic designed by me, implementation assisted by AI
+- Inline refactors and debugging during development
 
 ---
 
