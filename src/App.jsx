@@ -557,17 +557,23 @@ async function generateNarrative(cart, businessInfo) {
       max_tokens: 300,
       messages: [{
         role: "user",
-        content: `You are a TELUS Business sales rep writing a short personal note to a customer. You know their business and you're explaining, in plain human terms, why the specific products they've been quoted actually make sense together for a business like theirs.
+        content: `You are a TELUS Business sales rep writing a short personal note directly to a customer. The person reading this is a decision-maker or representative at the customer's company — someone who cares about their team's day-to-day operations and is evaluating whether this investment makes sense for their business. Write directly to them, as if you know their business and you're explaining in plain human terms why these specific products were put together for them.
 
 ${context}
 
-Write a single paragraph of 3 sentences. The paragraph should explain why this exact combination of products makes sense for this specific business. It should change completely if the products change. It should not read like a template with names swapped in.
+Write a single paragraph of 3 sentences. Use the specific product names, speeds, data amounts, features, and pricing from the context above. The paragraph must change meaningfully if the product selection changes. It must not read like a template.
 
-Sentence 1: Describe a real operational challenge this type of business faces day to day, grounded in their industry and team size.
-Sentence 2: Explain how the specific products selected address that challenge directly. Name the products and be concrete about what they do.
-Sentence 3: Explain the financial or practical value of taking them as a bundle rather than separately. Use real numbers from the context if available.
+Sentence 1: Describe a real day-to-day operational challenge this business faces, grounded in their industry and team size. Be specific.
+Sentence 2: Explain how the exact products selected solve that challenge. Reference the actual tier names, speeds, data caps, coverage, or standout features from the context. Be concrete.
+Sentence 3: Explain the financial case. Use the real savings amount and monthly total from the context. Make it clear why bundling makes sense for this business specifically.
 
-Write like a person, not a brochure. Use contractions. Never use dashes or em dashes to connect clauses. No semicolons. No parentheses. No filler phrases like "robust solution", "seamlessly", "leverage", "we are pleased", or "cutting-edge". Address the business by name if one is provided.`,
+Rules:
+- Write like a person, not a brochure. Use contractions.
+- Never use dashes or em dashes to connect clauses. No semicolons. No parentheses.
+- No filler: "robust", "seamlessly", "leverage", "we are pleased", "cutting-edge", "dynamic".
+- Address the business by name if one is provided.
+- Every sentence must earn its place. If it could appear in any quote for any business, rewrite it.
+- Write all product names, tier names, speeds, data amounts, and prices in ALL CAPS. For example: PUREFIBRE 1.5G, 100GB, $135/MO, BUSINESS 5G+ COMPLETE, 1500 MBPS.`,
       }],
     }),
   });

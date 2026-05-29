@@ -12,8 +12,8 @@ A rep-facing SMB Quote Builder that lets a TELUS sales rep select products, conf
 - Three TELUS SMB products: Business Internet, Business Mobility, Business Security
 - Real-time quote summary with running totals
 - Automated promotional pricing rules
-- AI-generated personalised proposal narrative (Claude API)
-- Clean customer-facing proposal view
+- AI-generated personalised proposal narrative (Claude API) — grounded in the specific tier, speed, data, features, and pricing configured by the rep
+- Clean customer-facing proposal view with selected products, configured features, pricing, promotions, and AI narrative
 
 ---
 
@@ -28,7 +28,7 @@ echo "VITE_ANTHROPIC_API_KEY=your_key_here" > .env
 
 # Start the dev server
 npm run dev
-# Open http://localhost:3333
+# Open http://localhost:5173
 
 # Run tests
 npm test
@@ -75,7 +75,7 @@ All pricing sourced directly from **telus.com/en/business** (verified May 2026).
 **Rule 3 — Priority Queue + Dedicated Success Manager (Perk)**
 - Trigger: 2 or more products selected
 - Discount: $0 (value perk, not monetary)
-- Source: "Get premium support with Priority Queue when you bundle 3 or more TELUS Business products" — telus.com/en/business
+- Source: TELUS Business premium support offering — telus.com/en/business
 - How it surfaces: Shown as a star perk in the quote summary and customer proposal
 
 ---

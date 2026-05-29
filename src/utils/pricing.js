@@ -186,23 +186,74 @@ export function getCartSummary(cart) {
  * @returns {string} Context string for LLM
  */
 export function buildLLMContext(cart, businessInfo) {
-  const summary = getCartSummary(cart);
   const quote = calculateQuote(cart);
+  const isBundled = !!(cart.internet || cart.mobility);
+  const sections = [];
 
-  const products = [];
-  if (cart.internet) products.push('high-speed fibre internet');
-  if (cart.mobility) products.push(`business mobile for ${cart.mobility.lines} line${cart.mobility.lines > 1 ? 's' : ''}`);
-  if (cart.security) products.push('professional security monitoring');
+  if (cart.internet) {
+    const tier = PRODUCTS.internet.tiers.find(t => t.id === cart.internet.tierId);
+    if (tier) {
+      sections.push(
+        `BUSINESS INTERNET — ${tier.name}
+  Speed: ${tier.speed}
+  Term: ${tier.term}-month contract
+  Key features: ${tier.features.slice(0, 3).join(', ')}
+  Price: $${tier.price}/mo`
+      );
+    }
+  }
+
+  if (cart.mobility) {
+    const tier = PRODUCTS.mobility.tiers.find(t => t.id === cart.mobility.tierId);
+    if (tier) {
+      const totalPrice = getMobilityTotal(cart.mobility.tierId, cart.mobility.lines);
+      sections.push(
+        `BUSINESS MOBILITY — ${tier.name}
+  Lines: ${cart.mobility.lines}
+  Data: ${tier.data} at ${tier.coverage}
+  Key features: ${tier.features.slice(0, 3).join(', ')}
+  Price: $${tier.price}/line/mo ($${totalPrice}/mo total for ${cart.mobility.lines} lines)`
+      );
+    }
+  }
+
+  if (cart.security) {
+    const tier = PRODUCTS.security.tiers.find(t => t.id === cart.security.tierId);
+    if (tier) {
+      const price = getSecurityPrice(cart.security.tierId, isBundled, cart.security.addons || []);
+      const addons = cart.security.addons?.length
+        ? `\n  Add-ons: ${cart.security.addons.join(', ')}`
+        : '';
+      sections.push(
+        `BUSINESS SECURITY — ${tier.name}
+  Key features: ${tier.features.slice(0, 3).join(', ')}${addons}
+  Price: $${price}/mo${isBundled ? ` (bundled rate, saves $${tier.price - tier.bundledPrice}/mo vs standalone)` : ''}`
+      );
+    }
+  }
+
+  const promoLines = quote.promos
+    .filter(p => !p.isPerk)
+    .map(p => `  - ${p.name}: -$${p.amount}/mo`)
+    .join('\n');
+  const perkLines = quote.promos
+    .filter(p => p.isPerk)
+    .map(p => `  - ${p.name} (included)`)
+    .join('\n');
 
   return `
-Business Name: ${businessInfo.businessName || 'the customer'}
-Industry: ${businessInfo.industry || 'small business'}
-Number of Employees: ${businessInfo.employees || '1-30'}
-Products Selected: ${products.join(', ')}
-Monthly Investment: $${quote.total}/mo
-Savings vs Individual Pricing: $${quote.savings}/mo
+CUSTOMER
+  Business: ${businessInfo.businessName || 'the customer'}
+  Industry: ${businessInfo.industry || 'small business'}
+  Team size: ${businessInfo.employees || '1-30 employees'}
 
-Detailed Quote:
-${summary}
+SELECTED PRODUCTS
+${sections.join('\n\n')}
+
+PROMOTIONS APPLIED
+${promoLines || '  None'}
+${perkLines ? `\nPERKS INCLUDED\n${perkLines}` : ''}
+
+MONTHLY TOTAL: $${quote.total}/mo${quote.savings > 0 ? ` (saving $${quote.savings}/mo vs individual pricing)` : ''}
   `.trim();
 }
