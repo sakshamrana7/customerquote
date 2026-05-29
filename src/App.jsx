@@ -561,11 +561,12 @@ async function generateNarrative(cart, businessInfo) {
 
 ${context}
 
-Write a single paragraph of 3 sentences. Use the specific product names, speeds, data amounts, features, and pricing from the context above. The paragraph must change meaningfully if the product selection changes. It must not read like a template.
+Write a paragraph of 4 sentences. Use the specific product names, speeds, data amounts, features, and pricing from the context above. The paragraph must change meaningfully if the product selection changes. It must not read like a template.
 
 Sentence 1: Describe a real day-to-day operational challenge this business faces, grounded in their industry and team size. Be specific.
 Sentence 2: Explain how the exact products selected solve that challenge. Reference the actual tier names, speeds, data caps, coverage, or standout features from the context. Be concrete.
 Sentence 3: Explain the financial case. Use the real savings amount and monthly total from the context. Make it clear why bundling makes sense for this business specifically.
+Sentence 4: If there are products listed under "NOT YET INCLUDED" in the context, mention one of them as a natural next step for this type of business. Name it specifically, say what it does, and mention the price. If nothing is listed under "NOT YET INCLUDED", skip this sentence and write only 3 sentences.
 
 Rules:
 - Write like a person, not a brochure. Use contractions.

@@ -241,6 +241,21 @@ export function buildLLMContext(cart, businessInfo) {
     .map(p => `  - ${p.name} (included)`)
     .join('\n');
 
+  const upsellLines = [];
+  if (!cart.internet) {
+    const tier = PRODUCTS.internet.tiers[0];
+    upsellLines.push(`  - BUSINESS INTERNET (${tier.name}): $${tier.price}/mo — ${tier.features[0]}, ${tier.features[2]}`);
+  }
+  if (!cart.mobility) {
+    const tier = PRODUCTS.mobility.tiers.find(t => t.id === 'mob_complete');
+    upsellLines.push(`  - BUSINESS MOBILITY (${tier.name}): $${tier.price}/line/mo — ${tier.data} ${tier.coverage}, ${tier.features[1]}`);
+  }
+  if (!cart.security) {
+    const tier = PRODUCTS.security.tiers.find(t => t.id === 'sec_monitor');
+    const bundledPrice = (cart.internet || cart.mobility) ? tier.bundledPrice : tier.price;
+    upsellLines.push(`  - BUSINESS SECURITY (${tier.name}): $${bundledPrice}/mo when bundled — ${tier.features[0]}, ${tier.features[1]}`);
+  }
+
   return `
 CUSTOMER
   Business: ${businessInfo.businessName || 'the customer'}
@@ -255,5 +270,6 @@ ${promoLines || '  None'}
 ${perkLines ? `\nPERKS INCLUDED\n${perkLines}` : ''}
 
 MONTHLY TOTAL: $${quote.total}/mo${quote.savings > 0 ? ` (saving $${quote.savings}/mo vs individual pricing)` : ''}
+${upsellLines.length > 0 ? `\nNOT YET INCLUDED (available to add)\n${upsellLines.join('\n')}` : ''}
   `.trim();
 }
