@@ -38,7 +38,7 @@ describe('getMobilityPricePerLine', () => {
   it('returns $85/mo for Unlimited single line', () => {
     expect(getMobilityPricePerLine('mob_unlimited', 1)).toBe(85);
   });
-
+  
   it('returns 0 for unknown tier', () => {
     expect(getMobilityPricePerLine('nonexistent', 1)).toBe(0);
   });
